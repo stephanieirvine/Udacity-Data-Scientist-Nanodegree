@@ -1,4 +1,13 @@
+# Wine Review Data Analysis
+
 1. Installations
+ - NumPy
+ - Pandas
+ - Seaborn
+ - Matplotlib
+ - Wordcloud
+ 
+No additional installations beyond the Anaconda distribution of Python and Jupyter notebooks.
 
 2. Project Motivation
 
