@@ -10,6 +10,7 @@
 No additional installations beyond the Anaconda distribution of Python and Jupyter notebooks.
 
 ## Project Motivation
+For this project I was interested in conducting exploratory data analysis using a Wine Review dataset containing approximately 130k reviews from the [Wine Enthusiast](https://www.winemag.com/?s=&drink_type=wine) 
 
 ## File Descriptions
 
