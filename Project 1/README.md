@@ -6,6 +6,7 @@
  - Seaborn
  - Matplotlib
  - Wordcloud
+ - Pillow
  
 No additional installations beyond the Anaconda distribution of Python and Jupyter notebooks.
 
