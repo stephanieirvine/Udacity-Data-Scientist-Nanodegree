@@ -23,7 +23,7 @@ I wanted the opportunity to explore the data and communicate my findings via a b
 There is one exploratory notebook available here to showcase my work related to the questions posed. Markdown cells were used throughout to explain the process taken.
 
 ## How to Interact with your project
-The main findings of the code can be found at the post available here
+The main findings of the code can be found at the post available [here](https://medium.com/@stephanieirvine15/how-data-will-make-you-drink-wine-differently-c59d669831a1)
 
 ## Licensing, Authors, Acknowledgements, etc.
 Acknowledgement should go to [Kaggle](https://www.kaggle.com/zynicide/wine-reviews) and zackthoutt for providing the dataset. Acknowledgement should also go to [DataCamp](https://www.datacamp.com/community/tutorials/wordcloud-python) for their excellent WordCloud tutorial.
