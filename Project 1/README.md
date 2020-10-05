@@ -10,10 +10,20 @@
 No additional installations beyond the Anaconda distribution of Python and Jupyter notebooks.
 
 ## Project Motivation
-For this project I was interested in conducting exploratory data analysis using a Wine Review dataset containing approximately 130k reviews from the [Wine Enthusiast](https://www.winemag.com/?s=&drink_type=wine) 
+For this project I was interested in conducting exploratory data analysis using a [Wine Review dataset found on Kaggle](https://www.kaggle.com/zynicide/wine-reviews) containing approximately 130k reviews from the [Wine Enthusiast](https://www.winemag.com/?s=&drink_type=wine) to better understand:
+ - Where does the best wine in the world come from?
+ - Is price related to quality?
+ - Are certain varieties of wine higher quality?
+ - What is the best wine in each price bracket?
+ - What words are most used when talking about wine?
+
+I wanted the opportunity to explore the data and communicate my findings via a blog post on Medium in what is hopefully an engaging post which gives the reader insight into the questions posed. 
 
 ## File Descriptions
+There is one exploratory notebook available here to showcase my work related to the questions posed. Markdown cells were used throughout to explain the process taken.
 
 ## How to Interact with your project
+The main findings of the code can be found at the post available here
 
 ## Licensing, Authors, Acknowledgements, etc.
+Acknowledgement should go to Kaggle and zackthoutt for providing the dataset. 
