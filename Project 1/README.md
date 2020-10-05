@@ -26,4 +26,4 @@ There is one exploratory notebook available here to showcase my work related to 
 The main findings of the code can be found at the post available here
 
 ## Licensing, Authors, Acknowledgements, etc.
-Acknowledgement should go to Kaggle and zackthoutt for providing the dataset. 
+Acknowledgement should go to Kaggle and zackthoutt for providing the dataset. Acknowledgement should also go to [DataCamp](https://www.datacamp.com/community/tutorials/wordcloud-python) for their excellent WordCloud tutorial.
