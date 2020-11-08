@@ -70,7 +70,7 @@ def save_data(df, database_filename):
 
 
 def main():
-    """Loads data, cleans data, saves data to database"""
+    """Loads data, cleans data, saves data to database."""
     if len(sys.argv) == 4:
 
         messages_filepath, categories_filepath, database_filepath = sys.argv[1:]
