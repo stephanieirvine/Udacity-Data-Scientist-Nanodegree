@@ -6,7 +6,6 @@ import sqlite3
 import sqlalchemy
 from sqlalchemy import create_engine
 import matplotlib.pyplot as plt
-%matplotlib inline
 import nltk
 from nltk.tokenize import word_tokenize
 from nltk.stem import WordNetLemmatizer
