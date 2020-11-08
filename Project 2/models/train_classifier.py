@@ -35,7 +35,7 @@ def load_data(database_filepath):
     Y: Target
     """
     # load data from database 
-    engine = create_engine(f'sqlite:///{database_filename}')
+    engine = create_engine(f'sqlite:///{database_filepath}')
     df = pd.read_sql_table("disaster_messages", con=engine)
     X = df['message']
     Y = df.iloc[:, 4:]
