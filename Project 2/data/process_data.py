@@ -63,9 +63,9 @@ def clean_data(df):
     df.drop_duplicates(inplace=True)
     return df
     
-def save_data(df, database_filename):
+def save_data(df, database_filepath):
     """Stores df in a SQLite database."""
-    engine = create_engine(f'sqlite:///{database_filename}')
+    engine = create_engine(f'sqlite:///{database_filepath}')
     df.to_sql('disaster_messages', engine, index=False, if_exists='replace')  
 
 
