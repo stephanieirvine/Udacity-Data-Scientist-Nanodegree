@@ -52,3 +52,6 @@ The project includes a web app where an emergency worker can input a new message
 
 ![app2](https://user-images.githubusercontent.com/54407746/98724932-5bf35780-238c-11eb-8a93-ebb09ab2d510.JPG)
 
+
+#### Acknowledgements
+Thanks to Udacity for starter code for the web app. 
