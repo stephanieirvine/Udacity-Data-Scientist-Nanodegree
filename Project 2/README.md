@@ -32,6 +32,7 @@ A jupyter notebook `ML Pipeline Preparation` was used to do EDA to prepare the t
 The project includes a web app where an emergency worker can input a new message and get classification results in several categories. The web app will also display visualizations of the data. The outputs are shown below:
 
 
+
 ### Instructions:
 1. Run the following commands in the project's root directory to set up your database and model.
 
