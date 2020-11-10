@@ -31,6 +31,7 @@ A jupyter notebook `ML Pipeline Preparation` was used to do EDA to prepare the t
 #### 3. Flask Web App
 The project includes a web app where an emergency worker can input a new message and get classification results in several categories. The web app will also display visualizations of the data. The outputs are shown below:
 
+![app1](https://user-images.githubusercontent.com/54407746/98724735-159df880-238c-11eb-8338-bc4b4e0b1c39.JPG)
 
 
 ### Instructions:
