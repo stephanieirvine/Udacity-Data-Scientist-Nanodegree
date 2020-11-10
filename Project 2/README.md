@@ -7,17 +7,17 @@ In this project, I applied my data engineering skills to analyze disaster data f
 There are three components I completed for this project. 
 
 #### 1. ETL Pipeline
-A Python script, process_data.py, writes a data cleaning pipeline that:
+A Python script, `process_data.py`, writes a data cleaning pipeline that:
 
  - Loads the messages and categories datasets
  - Merges the two datasets
  - Cleans the data
  - Stores it in a SQLite database
  
-A jupyter notebook 'ETL Pipeline Preparation' was used to do EDA to prepare the process_data.py python script. 
+A jupyter notebook `ETL Pipeline Preparation` was used to do EDA to prepare the process_data.py python script. 
  
 #### 2. ML Pipeline
-A Python script, train_classifier.py, writes a machine learning pipeline that:
+A Python script, `train_classifier.py`, writes a machine learning pipeline that:
 
  - Loads data from the SQLite database
  - Splits the dataset into training and test sets
@@ -26,10 +26,10 @@ A Python script, train_classifier.py, writes a machine learning pipeline that:
  - Outputs results on the test set
  - Exports the final model as a pickle file
  
-A jupyter notebook 'ML Pipeline Preparation' was used to do EDA to prepare the train_classifier.py python script. 
+A jupyter notebook `ML Pipeline Preparation` was used to do EDA to prepare the train_classifier.py python script. 
 
 #### 3. Flask Web App
-Credit to Udacity for providing much of the html, css, and javascript code for the flask web app which I have modified and added to. The outputs are shown below:
+The project includes a web app where an emergency worker can input a new message and get classification results in several categories. The web app will also display visualizations of the data. The outputs are shown below:
 
 
 ### Instructions:
