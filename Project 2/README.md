@@ -17,17 +17,16 @@ A Python script, process_data.py, writes a data cleaning pipeline that:
 #### 2. ML Pipeline
 A Python script, train_classifier.py, writes a machine learning pipeline that:
 
-Loads data from the SQLite database
-Splits the dataset into training and test sets
-Builds a text processing and machine learning pipeline
-Trains and tunes a model using GridSearchCV
-Outputs results on the test set
-Exports the final model as a pickle file
-3. Flask Web App
-We are providing much of the flask web app for you, but feel free to add extra features depending on your knowledge of flask, html, css and javascript. For this part, you'll need to:
+ - Loads data from the SQLite database
+ - Splits the dataset into training and test sets
+ - Builds a text processing and machine learning pipeline
+ - Trains and tunes a model using GridSearchCV
+ - Outputs results on the test set
+ - Exports the final model as a pickle file
+ 
+#### 3. Flask Web App
+Credit to Udacity for providing much of the html, css, and javascript code for the flask web app which I have modified and added to. The outputs are shown below:
 
-Modify file paths for database and model as needed
-Add data visualizations using Plotly in the web app. One example is provided for you
 
 ### Instructions:
 1. Run the following commands in the project's root directory to set up your database and model.
@@ -41,5 +40,3 @@ Add data visualizations using Plotly in the web app. One example is provided for
     `python run.py`
 
 3. Go to http://0.0.0.0:3001/
-
-### Web App Output
