@@ -1,15 +1,6 @@
 # Disaster Response Pipeline Project
 
-## Table of Contents
-[Project Motivation](### Project Motivation)    
-[File Descriptions](### File Descriptions)    
-[Components](### Components)    
-[Instructions of How to Interact With Project](### Instructions of How to Interact With Project:)    
-[Licensing, Authors, Acknowledgements, etc.](### Licensing, Authors, Acknowledgements, etc.)    
-
-
 ### Project Motivation
-<a name="Project Motivation"/>
 In this project, I applied my data engineering skills to analyze disaster data from [Figure Eight](https://appen.com/) to build a model for an API that classifies disaster messages. I have created a machine learning pipeline to categorize real messages that were sent during disaster events so that the messages could be sent to an appropriate disaster relief agency. The project includes a web app where an emergency worker can input a new message and get classification results in several categories. The web app will also display visualizations of the data.
 
 ### File Descriptions
