@@ -40,20 +40,20 @@ The project includes a web app where an emergency worker can input a new message
 ![app2](https://user-images.githubusercontent.com/54407746/98724932-5bf35780-238c-11eb-8a93-ebb09ab2d510.JPG)
 
 ### File Descriptions
-app
-| - template
-| |- master.html # main page of web app
-| |- go.html # classification result page of web app
-|- run.py # Flask file that runs app
-data
-|- disaster_categories.csv # data to process
-|- disaster_messages.csv # data to process
-|- process_data.py
-|- InsertDatabaseName.db # database to save clean data to
-models
-|- train_classifier.py
-|- classifier.pkl # saved model
-README.md
+app    
+| - template    
+| |- master.html # main page of web app    
+| |- go.html # classification result page of web app    
+|- run.py # Flask file that runs app    
+data    
+|- disaster_categories.csv # data to process    
+|- disaster_messages.csv # data to process    
+|- process_data.py    
+|- InsertDatabaseName.db # database to save clean data to    
+models    
+|- train_classifier.py    
+|- classifier.pkl # saved model    
+README.md    
 
 ### Instructions of How to Interact With Project:
 1. Run the following commands in the project's root directory to set up your database and model.
