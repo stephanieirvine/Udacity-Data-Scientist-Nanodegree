@@ -23,7 +23,7 @@ The project involved:
 There is one exploratory notebook and html file of the notebook available here to showcase my work in predicting churn. Markdown cells were used throughout to explain the process taken.
 
 ## Medium Blog Post 
-The main findings of the code can be found at the Medium Blog post available [here](https://medium.com/@stephanieirvine15/predicting-churn-for-a-music-streaming-service-using-pyspark-4c8edc8a19e0) explaining the technical details of my project.
+The main findings of the code can be found at the Medium Blog post available [here](https://medium.com/@stephanieirvine15/predicting-churn-with-pyspark-4c8edc8a19e0) explaining the technical details of my project.
 A Random Forest Classifier was chosen to be the best model by evaluating F1 score and accuracy metrics. The final model achieved an F1 and Accuracy score of 0.88. 
 
 ## Licensing, Authors, Acknowledgements, etc.
