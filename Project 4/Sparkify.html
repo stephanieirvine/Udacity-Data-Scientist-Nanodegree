@@ -15338,7 +15338,7 @@ only showing top 20 rows
 <div class="prompt input_prompt">In&nbsp;[27]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># sort records for a user in reverse time order and add up vals in churn column</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># sort records for a user in reverse time order so we can add up vals in churn column</span>
 <span class="n">windowval</span> <span class="o">=</span> <span class="n">Window</span><span class="o">.</span><span class="n">partitionBy</span><span class="p">(</span><span class="s2">&quot;userId&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">orderBy</span><span class="p">(</span><span class="n">desc</span><span class="p">(</span><span class="s2">&quot;ts&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">rangeBetween</span><span class="p">(</span><span class="n">Window</span><span class="o">.</span><span class="n">unboundedPreceding</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 </pre></div>
 
@@ -15352,7 +15352,8 @@ only showing top 20 rows
 <div class="prompt input_prompt">In&nbsp;[28]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">&quot;churn&quot;</span><span class="p">,</span> <span class="n">Fsum</span><span class="p">(</span><span class="s2">&quot;churn&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">over</span><span class="p">(</span><span class="n">windowval</span><span class="p">))</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># create column churn which contains sum of churn 1s over records</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">&quot;churn&quot;</span><span class="p">,</span> <span class="n">Fsum</span><span class="p">(</span><span class="s2">&quot;churn&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">over</span><span class="p">(</span><span class="n">windowval</span><span class="p">))</span>
 </pre></div>
 
     </div>
@@ -15365,7 +15366,8 @@ only showing top 20 rows
 <div class="prompt input_prompt">In&nbsp;[29]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_churn</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">select</span><span class="p">([</span><span class="s1">&#39;userId&#39;</span><span class="p">,</span> <span class="s1">&#39;churn&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">dropDuplicates</span><span class="p">()</span><span class="o">.</span><span class="n">groupBy</span><span class="p">(</span><span class="s1">&#39;churn&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># groupby churn to get counts</span>
+<span class="n">df_churn</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">select</span><span class="p">([</span><span class="s1">&#39;userId&#39;</span><span class="p">,</span> <span class="s1">&#39;churn&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">dropDuplicates</span><span class="p">()</span><span class="o">.</span><span class="n">groupBy</span><span class="p">(</span><span class="s1">&#39;churn&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
 </pre></div>
 
     </div>
@@ -15444,7 +15446,8 @@ only showing top 20 rows
 <div class="prompt input_prompt">In&nbsp;[32]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">[</span><span class="mi">8</span><span class="p">,</span><span class="mi">6</span><span class="p">])</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># plot the number of users that churned</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">[</span><span class="mi">8</span><span class="p">,</span><span class="mi">6</span><span class="p">])</span>
 <span class="n">ax</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span><span class="n">data</span> <span class="o">=</span> <span class="n">df_churn</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="s1">&#39;churn&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;count&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Numbers of Users That Churned&quot;</span><span class="p">);</span>
 </pre></div>
@@ -15481,7 +15484,8 @@ only showing top 20 rows
 <div class="prompt input_prompt">In&nbsp;[33]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="mi">52</span><span class="o">/</span><span class="p">(</span><span class="mi">173</span><span class="o">+</span><span class="mi">52</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># calculate churn rate</span>
+<span class="mi">52</span><span class="o">/</span><span class="p">(</span><span class="mi">173</span><span class="o">+</span><span class="mi">52</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span>
 </pre></div>
 
     </div>
@@ -15537,7 +15541,8 @@ only showing top 20 rows
 <div class="prompt input_prompt">In&nbsp;[34]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_len</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">churn</span> <span class="o">==</span><span class="mi">1</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># get those customers who churned</span>
+<span class="n">df_len</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">churn</span> <span class="o">==</span><span class="mi">1</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -15550,7 +15555,8 @@ only showing top 20 rows
 <div class="prompt input_prompt">In&nbsp;[35]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_pd</span> <span class="o">=</span> <span class="n">df_len</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># convert to pandas</span>
+<span class="n">df_pd</span> <span class="o">=</span> <span class="n">df_len</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
 </pre></div>
 
     </div>
@@ -15563,7 +15569,8 @@ only showing top 20 rows
 <div class="prompt input_prompt">In&nbsp;[36]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_pd</span><span class="o">.</span><span class="n">length</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># drop the nulls</span>
+<span class="n">df_pd</span><span class="o">.</span><span class="n">length</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -15576,7 +15583,8 @@ only showing top 20 rows
 <div class="prompt input_prompt">In&nbsp;[37]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">bin_edges</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">df_pd</span><span class="p">[</span><span class="s1">&#39;length&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="o">+</span><span class="mi">25</span><span class="p">,</span> <span class="mi">25</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># plot the distribution</span>
+<span class="n">bin_edges</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">df_pd</span><span class="p">[</span><span class="s1">&#39;length&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="o">+</span><span class="mi">25</span><span class="p">,</span> <span class="mi">25</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">data</span> <span class="o">=</span> <span class="n">df_pd</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="s1">&#39;length&#39;</span><span class="p">,</span> <span class="n">bins</span> <span class="o">=</span> <span class="n">bin_edges</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">700</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Length&#39;</span><span class="p">)</span>
@@ -15610,12 +15618,21 @@ only showing top 20 rows
 </div>
 
 </div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Now we can do the same process for customers who didn't churn.</p>
+
+</div>
+</div>
+</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[38]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_len_stay</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">churn</span> <span class="o">==</span><span class="mi">0</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># users who stayed</span>
+<span class="n">df_len_stay</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">churn</span> <span class="o">==</span><span class="mi">0</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -15628,7 +15645,8 @@ only showing top 20 rows
 <div class="prompt input_prompt">In&nbsp;[39]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_pd</span> <span class="o">=</span> <span class="n">df_len_stay</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># convert to pandas</span>
+<span class="n">df_pd</span> <span class="o">=</span> <span class="n">df_len_stay</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
 </pre></div>
 
     </div>
@@ -15641,7 +15659,8 @@ only showing top 20 rows
 <div class="prompt input_prompt">In&nbsp;[40]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_pd</span><span class="o">.</span><span class="n">length</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># drop nulls</span>
+<span class="n">df_pd</span><span class="o">.</span><span class="n">length</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -15654,7 +15673,8 @@ only showing top 20 rows
 <div class="prompt input_prompt">In&nbsp;[41]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">bin_edges</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">df_pd</span><span class="p">[</span><span class="s1">&#39;length&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="o">+</span><span class="mi">25</span><span class="p">,</span> <span class="mi">25</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># plot distribution</span>
+<span class="n">bin_edges</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">df_pd</span><span class="p">[</span><span class="s1">&#39;length&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="o">+</span><span class="mi">25</span><span class="p">,</span> <span class="mi">25</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">data</span> <span class="o">=</span> <span class="n">df_pd</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="s1">&#39;length&#39;</span><span class="p">,</span> <span class="n">bins</span> <span class="o">=</span> <span class="n">bin_edges</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">700</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Length&#39;</span><span class="p">)</span>
@@ -15691,7 +15711,7 @@ only showing top 20 rows
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>We can see from the above plots that length distribution is very similar for users that churned and those who stayed.</p>
+<p>We can see from the above plots that length distribution is very similar for users that churned and those who stayed. This won't be very useful for predicting customer churn. Let's try a categorical feature: gender.</p>
 
 </div>
 </div>
@@ -16209,7 +16229,8 @@ only showing top 20 rows
 <div class="prompt input_prompt">In&nbsp;[57]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_page</span> <span class="o">=</span> <span class="n">df_page</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># convert to pandas</span>
+<span class="n">df_page</span> <span class="o">=</span> <span class="n">df_page</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
 </pre></div>
 
     </div>
@@ -16231,6 +16252,14 @@ only showing top 20 rows
 </div>
 </div>
 
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Now that we have a count of the number of customers who churned and those that stayed we can calculate the rate and create this as a column on our dataFrame.</p>
+
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
@@ -16564,7 +16593,8 @@ only showing top 20 rows
 <div class="prompt input_prompt">In&nbsp;[61]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">[</span><span class="mi">20</span><span class="p">,</span><span class="mi">16</span><span class="p">])</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># plot the pages by churn</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">[</span><span class="mi">20</span><span class="p">,</span><span class="mi">16</span><span class="p">])</span>
 <span class="n">sns</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span><span class="n">data</span> <span class="o">=</span> <span class="n">df_page</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="s1">&#39;rate&#39;</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="s1">&#39;page&#39;</span><span class="p">,</span> <span class="n">hue</span> <span class="o">=</span> <span class="s1">&#39;churn&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Rate of Pages Navigated to by Users that Churned vs. Users that Stayed&#39;</span><span class="p">);</span>
 </pre></div>
@@ -16608,6 +16638,14 @@ only showing top 20 rows
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h3 id="Calculating-Songs-per-Hour">Calculating Songs per Hour<a class="anchor-link" href="#Calculating-Songs-per-Hour">&#182;</a></h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We can now turn our attention to calculating the number of songs listened to by churn and non churn users per hour.</p>
+
 </div>
 </div>
 </div>
@@ -16685,7 +16723,8 @@ only showing top 20 rows
 <div class="prompt input_prompt">In&nbsp;[65]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">songs_in_hour_stay</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">filter</span><span class="p">((</span><span class="n">df</span><span class="o">.</span><span class="n">page</span> <span class="o">==</span> <span class="s2">&quot;NextSong&quot;</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">churn</span> <span class="o">==</span> <span class="mi">0</span><span class="p">))</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">hour</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">()</span><span class="o">.</span><span class="n">orderBy</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">hour</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="s2">&quot;float&quot;</span><span class="p">))</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># create a df with those who didnt churn and which counts when user goes to next song page</span>
+<span class="n">songs_in_hour_stay</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">filter</span><span class="p">((</span><span class="n">df</span><span class="o">.</span><span class="n">page</span> <span class="o">==</span> <span class="s2">&quot;NextSong&quot;</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">churn</span> <span class="o">==</span> <span class="mi">0</span><span class="p">))</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">hour</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">()</span><span class="o">.</span><span class="n">orderBy</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">hour</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="s2">&quot;float&quot;</span><span class="p">))</span>
 </pre></div>
 
     </div>
@@ -16757,7 +16796,8 @@ only showing top 20 rows
 <div class="prompt input_prompt">In&nbsp;[67]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">songs_in_hour_stay_pd</span> <span class="o">=</span> <span class="n">songs_in_hour_stay</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># convert to pandas and then to numeric</span>
+<span class="n">songs_in_hour_stay_pd</span> <span class="o">=</span> <span class="n">songs_in_hour_stay</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
 <span class="n">songs_in_hour_stay_pd</span><span class="o">.</span><span class="n">hour</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">songs_in_hour_stay_pd</span><span class="o">.</span><span class="n">hour</span><span class="p">)</span>
 </pre></div>
 
@@ -16948,7 +16988,8 @@ only showing top 20 rows
 <div class="prompt input_prompt">In&nbsp;[69]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">[</span><span class="mi">8</span><span class="p">,</span><span class="mi">6</span><span class="p">])</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#plot the distribution</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">[</span><span class="mi">8</span><span class="p">,</span><span class="mi">6</span><span class="p">])</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">songs_in_hour_stay_pd</span><span class="p">[</span><span class="s2">&quot;hour&quot;</span><span class="p">],</span> <span class="n">songs_in_hour_stay_pd</span><span class="p">[</span><span class="s2">&quot;count&quot;</span><span class="p">])</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">24</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Hour&quot;</span><span class="p">)</span>
@@ -16986,7 +17027,7 @@ only showing top 20 rows
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>From above we can see that there is a peak of songs played between 3pm and 8pm. Next we will examine users who churned.</p>
+<p>From above we can see that there is a peak of songs played between 3pm and 8pm. Next we will examine users who churned by using the same process.</p>
 
 </div>
 </div>
@@ -16996,7 +17037,8 @@ only showing top 20 rows
 <div class="prompt input_prompt">In&nbsp;[70]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">songs_in_hour_churned</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">filter</span><span class="p">((</span><span class="n">df</span><span class="o">.</span><span class="n">page</span> <span class="o">==</span> <span class="s2">&quot;NextSong&quot;</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">churn</span> <span class="o">==</span> <span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">hour</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">()</span><span class="o">.</span><span class="n">orderBy</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">hour</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="s2">&quot;float&quot;</span><span class="p">))</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># dataframe with customers who churned and count next song page </span>
+<span class="n">songs_in_hour_churned</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">filter</span><span class="p">((</span><span class="n">df</span><span class="o">.</span><span class="n">page</span> <span class="o">==</span> <span class="s2">&quot;NextSong&quot;</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">churn</span> <span class="o">==</span> <span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">hour</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">()</span><span class="o">.</span><span class="n">orderBy</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">hour</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="s2">&quot;float&quot;</span><span class="p">))</span>
 </pre></div>
 
     </div>
@@ -17065,7 +17107,8 @@ only showing top 20 rows
 <div class="prompt input_prompt">In&nbsp;[72]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">songs_in_hour_churned</span> <span class="o">=</span> <span class="n">songs_in_hour_churned</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># convert to pandas and to numeric</span>
+<span class="n">songs_in_hour_churned</span> <span class="o">=</span> <span class="n">songs_in_hour_churned</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
 <span class="n">songs_in_hour_churned</span><span class="o">.</span><span class="n">hour</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">songs_in_hour_churned</span><span class="o">.</span><span class="n">hour</span><span class="p">)</span>
 </pre></div>
 
@@ -17079,7 +17122,8 @@ only showing top 20 rows
 <div class="prompt input_prompt">In&nbsp;[73]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">[</span><span class="mi">8</span><span class="p">,</span><span class="mi">6</span><span class="p">])</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#plot distribution of songs per hour for churned</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">[</span><span class="mi">8</span><span class="p">,</span><span class="mi">6</span><span class="p">])</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">songs_in_hour_churned</span><span class="p">[</span><span class="s2">&quot;hour&quot;</span><span class="p">],</span> <span class="n">songs_in_hour_churned</span><span class="p">[</span><span class="s2">&quot;count&quot;</span><span class="p">])</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">24</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Hour&quot;</span><span class="p">)</span>
@@ -17129,6 +17173,14 @@ only showing top 20 rows
 </div>
 </div>
 </div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We can plot this in a simple way which will allow us to compare those who churned and those who stayed in a bar chart by getting the averages for both groups.</p>
+
+</div>
+</div>
+</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[74]:</div>
@@ -17147,7 +17199,8 @@ only showing top 20 rows
 <div class="prompt input_prompt">In&nbsp;[75]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_songs</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;churn&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">({</span><span class="s2">&quot;count&quot;</span><span class="p">:</span><span class="s2">&quot;avg&quot;</span><span class="p">})</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># get average grouped by churn</span>
+<span class="n">df_songs</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;churn&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">({</span><span class="s2">&quot;count&quot;</span><span class="p">:</span><span class="s2">&quot;avg&quot;</span><span class="p">})</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 
     </div>
@@ -17197,7 +17250,8 @@ only showing top 20 rows
 <div class="prompt input_prompt">In&nbsp;[77]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_songs</span> <span class="o">=</span> <span class="n">df_songs</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># convert this to pandas df</span>
+<span class="n">df_songs</span> <span class="o">=</span> <span class="n">df_songs</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
 </pre></div>
 
     </div>
@@ -17210,7 +17264,8 @@ only showing top 20 rows
 <div class="prompt input_prompt">In&nbsp;[78]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">[</span><span class="mi">8</span><span class="p">,</span><span class="mi">6</span><span class="p">])</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#plot</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">[</span><span class="mi">8</span><span class="p">,</span><span class="mi">6</span><span class="p">])</span>
 <span class="n">ax</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span><span class="n">data</span> <span class="o">=</span> <span class="n">df_songs</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="s1">&#39;churn&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;avg(count)&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Average number of Songs Played per Session for Users that Churned vs. Users that Stayed&quot;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Average Number of Songs Played Per Session&quot;</span><span class="p">);</span>
@@ -17258,6 +17313,14 @@ only showing top 20 rows
 </div>
 </div>
 </div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We can create a similar chart for the number of artists that users listened to.</p>
+
+</div>
+</div>
+</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[79]:</div>
@@ -17276,7 +17339,8 @@ only showing top 20 rows
 <div class="prompt input_prompt">In&nbsp;[80]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_artists</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;churn&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">({</span><span class="s2">&quot;count&quot;</span><span class="p">:</span><span class="s2">&quot;avg&quot;</span><span class="p">})</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># get averages</span>
+<span class="n">df_artists</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;churn&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">({</span><span class="s2">&quot;count&quot;</span><span class="p">:</span><span class="s2">&quot;avg&quot;</span><span class="p">})</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 
     </div>
@@ -17313,7 +17377,8 @@ only showing top 20 rows
 <div class="prompt input_prompt">In&nbsp;[81]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_artists</span> <span class="o">=</span> <span class="n">df_artists</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># convert to pandas</span>
+<span class="n">df_artists</span> <span class="o">=</span> <span class="n">df_artists</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
 </pre></div>
 
     </div>
@@ -17321,12 +17386,21 @@ only showing top 20 rows
 </div>
 
 </div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We can plot this as a boxplot to see the max and medians for both groups.</p>
+
+</div>
+</div>
+</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[82]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">[</span><span class="mi">8</span><span class="p">,</span><span class="mi">6</span><span class="p">])</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#plot boxplot</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">[</span><span class="mi">8</span><span class="p">,</span><span class="mi">6</span><span class="p">])</span>
 <span class="n">ax</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">boxplot</span><span class="p">(</span><span class="n">data</span> <span class="o">=</span> <span class="n">df_artists</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="s1">&#39;churn&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;count&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Number of Artists Listened to on Sparkify&quot;</span><span class="p">)</span>
 </pre></div>
@@ -17463,7 +17537,8 @@ only showing top 20 rows
 <div class="prompt input_prompt">In&nbsp;[84]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">get_state</span> <span class="o">=</span> <span class="n">udf</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:])</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># get last two characters</span>
+<span class="n">get_state</span> <span class="o">=</span> <span class="n">udf</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:])</span>
 </pre></div>
 
     </div>
@@ -17490,7 +17565,8 @@ only showing top 20 rows
 <div class="prompt input_prompt">In&nbsp;[86]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_state</span><span class="o">.</span><span class="n">take</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># check that create state column worked</span>
+<span class="n">df_state</span><span class="o">.</span><span class="n">take</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -17537,435 +17613,11 @@ only showing top 20 rows
 <div class="prompt input_prompt">In&nbsp;[88]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_state_pd</span> <span class="o">=</span> <span class="n">df_state</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># convert to pandas </span>
+<span class="n">df_state_pd</span> <span class="o">=</span> <span class="n">df_state</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
 </pre></div>
 
     </div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[89]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_state_pd</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span> <span class="o">=</span> <span class="s1">&#39;count&#39;</span><span class="p">,</span> <span class="n">ascending</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[89]:</div>
-
-
-
-<div class="output_html rendered_html output_subarea output_execute_result">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>state</th>
-      <th>churn</th>
-      <th>count</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>27</th>
-      <td>CA</td>
-      <td>0</td>
-      <td>27</td>
-    </tr>
-    <tr>
-      <th>31</th>
-      <td>TX</td>
-      <td>0</td>
-      <td>13</td>
-    </tr>
-    <tr>
-      <th>5</th>
-      <td>PA</td>
-      <td>0</td>
-      <td>13</td>
-    </tr>
-    <tr>
-      <th>59</th>
-      <td>FL</td>
-      <td>0</td>
-      <td>11</td>
-    </tr>
-    <tr>
-      <th>37</th>
-      <td>WI</td>
-      <td>0</td>
-      <td>9</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>IL</td>
-      <td>0</td>
-      <td>8</td>
-    </tr>
-    <tr>
-      <th>44</th>
-      <td>CT</td>
-      <td>0</td>
-      <td>7</td>
-    </tr>
-    <tr>
-      <th>21</th>
-      <td>SC</td>
-      <td>0</td>
-      <td>7</td>
-    </tr>
-    <tr>
-      <th>13</th>
-      <td>NC</td>
-      <td>0</td>
-      <td>7</td>
-    </tr>
-    <tr>
-      <th>23</th>
-      <td>NH</td>
-      <td>0</td>
-      <td>7</td>
-    </tr>
-    <tr>
-      <th>34</th>
-      <td>CA</td>
-      <td>1</td>
-      <td>6</td>
-    </tr>
-    <tr>
-      <th>7</th>
-      <td>PA</td>
-      <td>1</td>
-      <td>5</td>
-    </tr>
-    <tr>
-      <th>32</th>
-      <td>AZ</td>
-      <td>0</td>
-      <td>5</td>
-    </tr>
-    <tr>
-      <th>30</th>
-      <td>IN</td>
-      <td>0</td>
-      <td>5</td>
-    </tr>
-    <tr>
-      <th>28</th>
-      <td>WV</td>
-      <td>0</td>
-      <td>5</td>
-    </tr>
-    <tr>
-      <th>54</th>
-      <td>MD</td>
-      <td>0</td>
-      <td>4</td>
-    </tr>
-    <tr>
-      <th>41</th>
-      <td>WA</td>
-      <td>0</td>
-      <td>4</td>
-    </tr>
-    <tr>
-      <th>57</th>
-      <td>NY</td>
-      <td>0</td>
-      <td>4</td>
-    </tr>
-    <tr>
-      <th>22</th>
-      <td>GA</td>
-      <td>0</td>
-      <td>4</td>
-    </tr>
-    <tr>
-      <th>0</th>
-      <td>AL</td>
-      <td>0</td>
-      <td>4</td>
-    </tr>
-    <tr>
-      <th>61</th>
-      <td>MD</td>
-      <td>1</td>
-      <td>3</td>
-    </tr>
-    <tr>
-      <th>56</th>
-      <td>NJ</td>
-      <td>0</td>
-      <td>3</td>
-    </tr>
-    <tr>
-      <th>15</th>
-      <td>TX</td>
-      <td>1</td>
-      <td>3</td>
-    </tr>
-    <tr>
-      <th>45</th>
-      <td>VA</td>
-      <td>0</td>
-      <td>3</td>
-    </tr>
-    <tr>
-      <th>6</th>
-      <td>NV</td>
-      <td>0</td>
-      <td>3</td>
-    </tr>
-    <tr>
-      <th>10</th>
-      <td>FL</td>
-      <td>1</td>
-      <td>3</td>
-    </tr>
-    <tr>
-      <th>35</th>
-      <td>MI</td>
-      <td>1</td>
-      <td>3</td>
-    </tr>
-    <tr>
-      <th>38</th>
-      <td>CO</td>
-      <td>0</td>
-      <td>2</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>AZ</td>
-      <td>1</td>
-      <td>2</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>AL</td>
-      <td>1</td>
-      <td>2</td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-    </tr>
-    <tr>
-      <th>46</th>
-      <td>WA</td>
-      <td>1</td>
-      <td>2</td>
-    </tr>
-    <tr>
-      <th>42</th>
-      <td>MI</td>
-      <td>0</td>
-      <td>2</td>
-    </tr>
-    <tr>
-      <th>19</th>
-      <td>MA</td>
-      <td>0</td>
-      <td>2</td>
-    </tr>
-    <tr>
-      <th>39</th>
-      <td>AK</td>
-      <td>0</td>
-      <td>2</td>
-    </tr>
-    <tr>
-      <th>8</th>
-      <td>OH</td>
-      <td>1</td>
-      <td>2</td>
-    </tr>
-    <tr>
-      <th>33</th>
-      <td>IA</td>
-      <td>0</td>
-      <td>2</td>
-    </tr>
-    <tr>
-      <th>29</th>
-      <td>MS</td>
-      <td>1</td>
-      <td>2</td>
-    </tr>
-    <tr>
-      <th>24</th>
-      <td>AR</td>
-      <td>1</td>
-      <td>2</td>
-    </tr>
-    <tr>
-      <th>25</th>
-      <td>CO</td>
-      <td>1</td>
-      <td>2</td>
-    </tr>
-    <tr>
-      <th>9</th>
-      <td>UT</td>
-      <td>0</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>51</th>
-      <td>ID</td>
-      <td>0</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>60</th>
-      <td>NY</td>
-      <td>1</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>18</th>
-      <td>KS</td>
-      <td>1</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>58</th>
-      <td>TN</td>
-      <td>0</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>OH</td>
-      <td>0</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>17</th>
-      <td>KY</td>
-      <td>0</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>55</th>
-      <td>MS</td>
-      <td>0</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>53</th>
-      <td>SC</td>
-      <td>1</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>49</th>
-      <td>IL</td>
-      <td>1</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>50</th>
-      <td>OR</td>
-      <td>1</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>36</th>
-      <td>OK</td>
-      <td>0</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>26</th>
-      <td>WV</td>
-      <td>1</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>47</th>
-      <td>LA</td>
-      <td>0</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>16</th>
-      <td>MT</td>
-      <td>0</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>14</th>
-      <td>IN</td>
-      <td>1</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>43</th>
-      <td>KS</td>
-      <td>0</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>12</th>
-      <td>MT</td>
-      <td>1</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>11</th>
-      <td>MO</td>
-      <td>1</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>40</th>
-      <td>WI</td>
-      <td>1</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>20</th>
-      <td>LA</td>
-      <td>1</td>
-      <td>1</td>
-    </tr>
-  </tbody>
-</table>
-<p>62 rows × 3 columns</p>
-</div>
-</div>
-
-</div>
-
 </div>
 </div>
 
@@ -17975,7 +17627,8 @@ only showing top 20 rows
 <div class="prompt input_prompt">In&nbsp;[90]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">[</span><span class="mi">20</span><span class="p">,</span><span class="mi">16</span><span class="p">])</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># plot </span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">[</span><span class="mi">20</span><span class="p">,</span><span class="mi">16</span><span class="p">])</span>
 <span class="n">sns</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span><span class="n">data</span> <span class="o">=</span> <span class="n">df_state_pd</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="s1">&#39;count&#39;</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="s1">&#39;state&#39;</span><span class="p">,</span> <span class="n">hue</span> <span class="o">=</span> <span class="s1">&#39;churn&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Count of Users that Churned vs. Users that Stayed by US State&#39;</span><span class="p">);</span>
 </pre></div>
@@ -18010,7 +17663,7 @@ only showing top 20 rows
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Most users were based in CA. More users in MI, KY, and OH states churned than stayed. This may be difficult to engineer a useful feature for when it comes to modelling.</p>
+<p>Most users were based in CA. More users in MI, KY, and OH states churned than stayed. This may be difficult to engineer a useful feature for when it comes to modelling. Let's leave this for now and move onto another column from our dataset; operating systems and browsers.</p>
 
 </div>
 </div>
@@ -18104,7 +17757,8 @@ only showing top 20 rows
 <div class="prompt input_prompt">In&nbsp;[93]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_opsys</span> <span class="o">=</span> <span class="n">df_opsys</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># convert to pandas</span>
+<span class="n">df_opsys</span> <span class="o">=</span> <span class="n">df_opsys</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
 </pre></div>
 
     </div>
@@ -18117,7 +17771,8 @@ only showing top 20 rows
 <div class="prompt input_prompt">In&nbsp;[94]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_opsys</span><span class="o">.</span><span class="n">userAgent</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># get the possible list of operating systems</span>
+<span class="n">df_opsys</span><span class="o">.</span><span class="n">userAgent</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
 </pre></div>
 
     </div>
@@ -18220,7 +17875,8 @@ Name: userAgent, dtype: int64</pre>
 <div class="prompt input_prompt">In&nbsp;[96]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_opsys</span><span class="p">[</span><span class="s1">&#39;os&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_opsys</span><span class="o">.</span><span class="n">userAgent</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">extract</span><span class="p">(</span><span class="s1">&#39;(?i)(</span><span class="si">{0}</span><span class="s1">)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;|&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os_list</span><span class="p">)))</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># create os column and extract strings that match our os_list and add to column </span>
+<span class="n">df_opsys</span><span class="p">[</span><span class="s1">&#39;os&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_opsys</span><span class="o">.</span><span class="n">userAgent</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">extract</span><span class="p">(</span><span class="s1">&#39;(?i)(</span><span class="si">{0}</span><span class="s1">)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;|&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os_list</span><span class="p">)))</span>
 </pre></div>
 
     </div>
@@ -18233,7 +17889,8 @@ Name: userAgent, dtype: int64</pre>
 <div class="prompt input_prompt">In&nbsp;[97]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_opsys</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># check that worked</span>
+<span class="n">df_opsys</span>
 </pre></div>
 
     </div>
@@ -18772,7 +18429,8 @@ Name: os, dtype: int64</pre>
 <div class="prompt input_prompt">In&nbsp;[100]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">[</span><span class="mi">10</span><span class="p">,</span><span class="mi">8</span><span class="p">])</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># plot count for churn and non churn users</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">[</span><span class="mi">10</span><span class="p">,</span><span class="mi">8</span><span class="p">])</span>
 <span class="n">sns</span><span class="o">.</span><span class="n">countplot</span><span class="p">(</span><span class="n">data</span> <span class="o">=</span> <span class="n">df_opsys</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="s1">&#39;os&#39;</span><span class="p">,</span> <span class="n">hue</span> <span class="o">=</span><span class="s1">&#39;churn&#39;</span><span class="p">,</span> <span class="n">order</span> <span class="o">=</span> <span class="n">os_order</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Count of Users that Churned vs. Users that Stayed by Operating System&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">ncol</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">framealpha</span> <span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;level&#39;</span><span class="p">);</span>
@@ -18816,7 +18474,7 @@ Name: os, dtype: int64</pre>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>We can also look if browsers had an effect on churn.</p>
+<p>We can also look if browsers had an effect on churn using the same process.</p>
 
 </div>
 </div>
@@ -19082,7 +18740,8 @@ only showing top 20 rows
 <div class="prompt input_prompt">In&nbsp;[111]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_days</span> <span class="o">=</span> <span class="n">df_days</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">df_days</span><span class="o">.</span><span class="n">Rank</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">df_days</span><span class="o">.</span><span class="n">Rank</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># just get those with a rank of 1 i.e the first rows</span>
+<span class="n">df_days</span> <span class="o">=</span> <span class="n">df_days</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">df_days</span><span class="o">.</span><span class="n">Rank</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">df_days</span><span class="o">.</span><span class="n">Rank</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -19387,7 +19046,7 @@ only showing top 20 rows
 </ul>
 </li>
 </ul>
-<p>We will also then add a churn label.</p>
+<p>We will also then add a churn label and join these all together. Once we drop the userId, this dataframe can be vectorised, standarised and fed into our different machine learning algorithms.</p>
 
 </div>
 </div>
@@ -19404,6 +19063,14 @@ only showing top 20 rows
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h3 id="Gender">Gender<a class="anchor-link" href="#Gender">&#182;</a></h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Our first feature is gender which is a categorical one. We will assign a 1 for 'female' and a 0 for 'male'.</p>
+
 </div>
 </div>
 </div>
@@ -19425,7 +19092,8 @@ only showing top 20 rows
 <div class="prompt input_prompt">In&nbsp;[120]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">gender_f1</span> <span class="o">=</span> <span class="n">gender_f1</span><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s1">&#39;gender&#39;</span><span class="p">,</span> <span class="n">when</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s1">&#39;gender&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;F&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">otherwise</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># create gender column </span>
+<span class="n">gender_f1</span> <span class="o">=</span> <span class="n">gender_f1</span><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s1">&#39;gender&#39;</span><span class="p">,</span> <span class="n">when</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s1">&#39;gender&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;F&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">otherwise</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
 </pre></div>
 
     </div>
@@ -19533,7 +19201,7 @@ only showing top 20 rows
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>The level can change so we need to only take the most recent.</p>
+<p>The next feature we will take is level. The level can change so we need to only take the most recent. We can use the rank trick from before.</p>
 
 </div>
 </div>
@@ -19768,6 +19436,14 @@ only showing top 20 rows
 </div>
 </div>
 </div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Our third feature is average number of songs per session for each user.</p>
+
+</div>
+</div>
+</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[132]:</div>
@@ -19923,6 +19599,14 @@ only showing top 2 rows
 </div>
 </div>
 </div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Next feature we can consider is number of roll advert actions. This had a higher number of roll ad count for those who churned since those who use the app for free are shown ads whereas paid subscribers aren't shown ads.</p>
+
+</div>
+</div>
+</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[138]:</div>
@@ -20064,6 +19748,14 @@ only showing top 2 rows
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h3 id="Number-of-thumb-down-actions">Number of thumb down actions<a class="anchor-link" href="#Number-of-thumb-down-actions">&#182;</a></h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The fifth feature we can add to our feature dataframe is thumbs down. Users who had churned in the past had performed more thumbs down actions than those who stayed with the service.</p>
+
 </div>
 </div>
 </div>
@@ -20210,6 +19902,14 @@ only showing top 2 rows
 </div>
 </div>
 </div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We can do the same for thumb up actions. Users who stayed with the service had performed more thumbs up actions in the past.</p>
+
+</div>
+</div>
+</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[152]:</div>
@@ -20350,6 +20050,14 @@ only showing top 2 rows
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h3 id="Number-of-friends-added">Number of friends added<a class="anchor-link" href="#Number-of-friends-added">&#182;</a></h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Similarly, number of friends added can indicate if a user is likely to churn or not. In the past, those who added more friends stayed with the app.</p>
+
 </div>
 </div>
 </div>
@@ -20496,6 +20204,14 @@ only showing top 2 rows
 </div>
 </div>
 </div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Again, those who added more songs to their playlists had stayed with the service so this can provide an indication of whether a user is likely to churn.</p>
+
+</div>
+</div>
+</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[166]:</div>
@@ -20639,6 +20355,14 @@ only showing top 2 rows
 </div>
 </div>
 </div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>As we discovered in EDA, users that listened to more diverse artists were less likely to churn.</p>
+
+</div>
+</div>
+</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[173]:</div>
@@ -20740,6 +20464,14 @@ only showing top 2 rows
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h3 id="Number-of-Days-Since-Registering">Number of Days Since Registering<a class="anchor-link" href="#Number-of-Days-Since-Registering">&#182;</a></h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Number of days since registering also looked useful from our EDA. We saw that users who had a shorter number of days since registering churned more than those who had used the service for a longer time.</p>
+
 </div>
 </div>
 </div>
@@ -20905,6 +20637,14 @@ only showing top 20 rows
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h3 id="Label">Label<a class="anchor-link" href="#Label">&#182;</a></h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Now we can create our label column indicating if the user churned or not.</p>
+
 </div>
 </div>
 </div>
@@ -21226,7 +20966,8 @@ only showing top 20 rows
 <div class="prompt input_prompt">In&nbsp;[190]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">feature_df</span><span class="o">.</span><span class="n">printSchema</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># print schema</span>
+<span class="n">feature_df</span><span class="o">.</span><span class="n">printSchema</span><span class="p">()</span>
 </pre></div>
 
     </div>
@@ -21269,7 +21010,8 @@ only showing top 20 rows
 <div class="prompt input_prompt">In&nbsp;[191]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">feature_df</span> <span class="o">=</span> <span class="n">feature_df</span><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">&quot;avg_song&quot;</span><span class="p">,</span> <span class="n">feature_df</span><span class="p">[</span><span class="s2">&quot;avg_song&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="s1">&#39;float&#39;</span><span class="p">))</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># make floats</span>
+<span class="n">feature_df</span> <span class="o">=</span> <span class="n">feature_df</span><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">&quot;avg_song&quot;</span><span class="p">,</span> <span class="n">feature_df</span><span class="p">[</span><span class="s2">&quot;avg_song&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="s1">&#39;float&#39;</span><span class="p">))</span>
 <span class="n">feature_df</span> <span class="o">=</span> <span class="n">feature_df</span><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">&quot;days&quot;</span><span class="p">,</span> <span class="n">feature_df</span><span class="p">[</span><span class="s2">&quot;days&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="s1">&#39;float&#39;</span><span class="p">))</span>
 </pre></div>
 
@@ -21283,7 +21025,8 @@ only showing top 20 rows
 <div class="prompt input_prompt">In&nbsp;[192]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">feature_df</span> <span class="o">=</span> <span class="n">feature_df</span><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">&quot;roll_ad&quot;</span><span class="p">,</span> <span class="n">feature_df</span><span class="p">[</span><span class="s2">&quot;roll_ad&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="n">IntegerType</span><span class="p">()))</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># make integers</span>
+<span class="n">feature_df</span> <span class="o">=</span> <span class="n">feature_df</span><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">&quot;roll_ad&quot;</span><span class="p">,</span> <span class="n">feature_df</span><span class="p">[</span><span class="s2">&quot;roll_ad&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="n">IntegerType</span><span class="p">()))</span>
 <span class="n">feature_df</span> <span class="o">=</span> <span class="n">feature_df</span><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">&quot;thumbs_down&quot;</span><span class="p">,</span> <span class="n">feature_df</span><span class="p">[</span><span class="s2">&quot;thumbs_down&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="n">IntegerType</span><span class="p">()))</span>
 <span class="n">feature_df</span> <span class="o">=</span> <span class="n">feature_df</span><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">&quot;thumbs_up&quot;</span><span class="p">,</span> <span class="n">feature_df</span><span class="p">[</span><span class="s2">&quot;thumbs_up&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="n">IntegerType</span><span class="p">()))</span>
 <span class="n">feature_df</span> <span class="o">=</span> <span class="n">feature_df</span><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">&quot;add_friend&quot;</span><span class="p">,</span> <span class="n">feature_df</span><span class="p">[</span><span class="s2">&quot;add_friend&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="n">IntegerType</span><span class="p">()))</span>
@@ -21680,6 +21423,14 @@ Validation Dataset:36
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
+<p>Logistic regression is the first machine learning algorithm we can try.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <h3 id="Training">Training<a class="anchor-link" href="#Training">&#182;</a></h3>
 </div>
 </div>
@@ -21689,7 +21440,8 @@ Validation Dataset:36
 <div class="prompt input_prompt">In&nbsp;[256]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">lr</span> <span class="o">=</span> <span class="n">LogisticRegression</span><span class="p">(</span><span class="n">featuresCol</span> <span class="o">=</span> <span class="s1">&#39;features&#39;</span><span class="p">,</span> <span class="n">labelCol</span> <span class="o">=</span> <span class="s1">&#39;label&#39;</span><span class="p">,</span> <span class="n">maxIter</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># instantiate</span>
+<span class="n">lr</span> <span class="o">=</span> <span class="n">LogisticRegression</span><span class="p">(</span><span class="n">featuresCol</span> <span class="o">=</span> <span class="s1">&#39;features&#39;</span><span class="p">,</span> <span class="n">labelCol</span> <span class="o">=</span> <span class="s1">&#39;label&#39;</span><span class="p">,</span> <span class="n">maxIter</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -21906,6 +21658,14 @@ only showing top 10 rows
 </div>
 </div>
 
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The F1 score for lr is 0.65 and the accuracy is 0.72. This is not a good model. It was very fast however at under 2 minutes.Let's try random forest next.</p>
+
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
@@ -22155,7 +21915,7 @@ only showing top 10 rows
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>The Random Forest Classifier performed better than Logistic Regression model. Let's try Gradient Boosted Tree Classifier.</p>
+<p>The Random Forest Classifier performed better than Logistic Regression model. An F1 of 0.87 and accuracy of 0.88 is good. The model didn't take too long to run either at just 2 min 57 seconds. Let's try Gradient Boosted Tree Classifier.</p>
 
 </div>
 </div>
@@ -22408,6 +22168,14 @@ only showing top 10 rows
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
+<p>The GBT achieved almost identical results to random forest but took a minute longer.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Linear-Support-Vector-Machine">Linear Support Vector Machine<a class="anchor-link" href="#Linear-Support-Vector-Machine">&#182;</a></h2>
 </div>
 </div>
@@ -22482,8 +22250,7 @@ Wall time: 1h 55s
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><strong>check if i need the Binary one or Multi one - svm is different to others</strong>
-We can use the MulticlassClassificationEvaluator to evaluate performance of our Linear Support Vector Machine.</p>
+<p>We can use the MulticlassClassificationEvaluator to evaluate performance of our Linear Support Vector Machine.</p>
 
 </div>
 </div>
@@ -22589,6 +22356,14 @@ We can use the MulticlassClassificationEvaluator to evaluate performance of our 
 </div>
 </div>
 
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>This model took the longest to run at over 1 hour! The F1 score and accuracy were similar to the logistic regression model which took under 2 minutes. The final algorithm we will try is Naive Bayes.</p>
+
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
@@ -22823,6 +22598,14 @@ only showing top 10 rows
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
+<p>This achieved a similar result to SVM but again took a fraction of the time.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Model-Tuning-for-Best-Models:">Model Tuning for Best Models:<a class="anchor-link" href="#Model-Tuning-for-Best-Models:">&#182;</a></h2>
 </div>
 </div>
@@ -22839,6 +22622,14 @@ only showing top 10 rows
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h3 id="Random-Forest">Random Forest<a class="anchor-link" href="#Random-Forest">&#182;</a></h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Let's see what parameters we can tune.</p>
+
 </div>
 </div>
 </div>
@@ -22888,6 +22679,14 @@ subsamplingRate: Fraction of the training data used for learning each decision t
 </div>
 </div>
 
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>I will select numTrees and maxDepth. I have chosen to go up to 100 trees and up to a max depth of 15 to reduce the possibility of overfitting. I originally had numFolds = 5 but had to change to 3 to speed up the process.</p>
+
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
@@ -22989,6 +22788,14 @@ Wall time: 1h 5min 37s
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h4 id="Best-Model-Performance:">Best Model Performance:<a class="anchor-link" href="#Best-Model-Performance:">&#182;</a></h4>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We can now get the final results for our random forest model.</p>
+
 </div>
 </div>
 </div>
@@ -23136,7 +22943,7 @@ Best Param (MaxDepth):  5
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Now we can check the feature importance for our best model and plot this in a chart.</p>
+<p>Finally, we can check the feature importance for our best model and plot this in a chart.</p>
 
 </div>
 </div>
