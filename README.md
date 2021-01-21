@@ -21,5 +21,5 @@ In this project, I used PySpark to predict customer churn for a music streaming 
 - Conducting Exploratory Data Analysis to understand the data and what features are useful for predicting churn
 - Feature Engineering to create features that will be used in the modelling process
 - Modelling using machine learning algorithms such as Logistic Regression, Random Forest, Gradient Boosted Trees, Linear SVM, Naive Bayes     
-[Link to notebook](https://github.com/stephanieirvine/Udacity-Data-Scientist-Nanodegree/tree/main/Project%204)
+[Link to notebook](https://github.com/stephanieirvine/Udacity-Data-Scientist-Nanodegree/tree/main/Project%204)     
 [Link to blog post](https://stephirvine.medium.com/predicting-churn-with-pyspark-4c8edc8a19e0)
