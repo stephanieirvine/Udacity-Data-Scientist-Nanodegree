@@ -14,3 +14,12 @@ In this project, I applied my data engineering skills to analyze disaster data f
 ## Project 3: Recommendations with IBM
 In this project, I analysed the interactions that users have with articles on the IBM Watson Studi platform and made recommendations to them about new articles I thought they'd like. I performed EDA, Rank Based Recommendations, User-user Based Collaborative Filtering, and Matrix factorisation.     
 [Link to notebook](https://github.com/stephanieirvine/Udacity-Data-Scientist-Nanodegree/blob/main/Project%203/Recommendations_with_IBM.ipynb)
+
+## Project 4: Predicting Customer Churn for a Music Streaming Service
+In this project, I used PySpark to predict customer churn for a music streaming service. The project involved:
+- Loading and cleaning a small subset (128MB) of a full dataset available (12GB)
+- Conducting Exploratory Data Analysis to understand the data and what features are useful for predicting churn
+- Feature Engineering to create features that will be used in the modelling process
+- Modelling using machine learning algorithms such as Logistic Regression, Random Forest, Gradient Boosted Trees, Linear SVM, Naive Bayes     
+[Link to notebook](https://github.com/stephanieirvine/Udacity-Data-Scientist-Nanodegree/tree/main/Project%204)
+[Link to blog post](https://stephirvine.medium.com/predicting-churn-with-pyspark-4c8edc8a19e0)
