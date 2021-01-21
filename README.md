@@ -23,3 +23,7 @@ In this project, I used PySpark to predict customer churn for a music streaming 
 - Modelling using machine learning algorithms such as Logistic Regression, Random Forest, Gradient Boosted Trees, Linear SVM, Naive Bayes     
 [Link to notebook](https://github.com/stephanieirvine/Udacity-Data-Scientist-Nanodegree/tree/main/Project%204)     
 [Link to blog post](https://stephirvine.medium.com/predicting-churn-with-pyspark-4c8edc8a19e0)
+
+## Data Scientist Nanodegree Certificate
+![image](https://user-images.githubusercontent.com/54407746/105397367-de17bc00-5c18-11eb-9d64-81f160686aa7.png)
+
